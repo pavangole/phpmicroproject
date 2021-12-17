@@ -1,38 +1,42 @@
 <?php
- $showAlert=false;
- $showError=false;
- $exists=false;
- 
-if($_SERVER["REQUEST_METHOD"]==['POST']){
-  include 'db_connect.php';
-$email=$_POST["Email"];
-$password=$_POST["password"];
-$cpassword=$_POST["cpassword"];
+include "db_connect.php";
+?>
+<?php
 
-$sql="Select * from signup where username='$username'";
-$result=mysqli_query($con,$sql);
+    $showAlert=false;
+    $showError=false;
+    $exists=false;
+    // echo "Hello ";
+    // foreach ($_SERVER as $value) {
+    //     echo "<br>".$value;
+    // }
+    if($_SERVER["REQUEST_METHOD"]=='POST') {
+        $email=$_POST["Email"];
+        $password=$_POST["password"];
+        $cpassword=$_POST["cpassword"];
 
-$num=mysqli_num_rows($result);
-
-if($num==0){
-  if(($password==$cpassword)&& $exists==false){
-    $hash=password_hash($password, PASSWORD_DEFAULT);
-
-    $sql="INSERT INTO `signup` ( `Email`, `pass`, `date`) VALUES ('username', '$hash', current_timestamp())";
-
-    $result = mysqli_query($con,$sql);
-    if($result){
-      $showAlert=true;
+        $sql="Select * from signup where EmailID='$email'";
+        $result=mysqli_query($conn,$sql);
+        $num=mysqli_num_rows($result);
+    if($num==0){
+          if(($password==$cpassword)) {
+              $sql="INSERT INTO signup VALUES ('$email', '$password')";
+              $result = mysqli_query($conn,$sql);
+              if($result) {
+                  $showAlert=true;
+            }
+          }
+          else{
+              $showError="Password do not match";
+          }
     }
-  }
-  else{
-    $showError="Password do not match";
-  }
-}
-if($num>0){
-  $exists="Soory Username Not Available";
-}
-}
+    if($num>0){
+        $exists="User Already Exist";
+    }
+
+    mysqli_close($conn);
+
+    }
 
 ?>
 <!doctype html>
@@ -99,21 +103,22 @@ margin-right:auto;
   </nav>
 
   <?php
-  if(!$exists){
+  if($exists){
     echo '<div class="alert alert-primary alert-dismissible fade show" role="alert">
  <strong>Soory </strong>'. $exists.'
  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>';
   }
-  if(!$showAlert){
+  if($showAlert){
+      header("Location: /phpmicroproject/login.php");
     echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
  <strong>Thank you </strong> Your respone is submitted you can log in
  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>';
   }
-  if(!$showError){
+  if($showError){
     echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
- <strong>Soory </strong> '. $showError.'
+ <strong>  '. $showError.'</strong>
  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>';
   }
@@ -123,7 +128,7 @@ margin-right:auto;
 <div class="board shadow">
   <div class="container mt-10"> 
     <h3 class="text-center ">Sign UP to PLUSgetWAY</h3>
-    <form action="http://localhost/PROJECT/signup.php" method="post">
+    <form action="http://localhost/phpmicroproject/signup.php" method="post">
     <div class="god">
   <div class="form-group mb-3">
     <label for="Email" class="form-label">Email address</label>
@@ -146,7 +151,7 @@ margin-right:auto;
 </div>
  
 
-   <!-- Optional JavaScript; choose one of the two! -->
+   <!-- Optional JavaScript; cfhoose one of the two! -->
 
     <!-- Option 1: Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
