@@ -10,11 +10,15 @@ include "db_connect.php";
     // foreach ($_SERVER as $value) {
     //     echo "<br>".$value;
     // }
+// Check whether data come or not
     if($_SERVER["REQUEST_METHOD"]=='POST') {
+
+        // Store the provide data by user
         $email=$_POST["Email"];
         $password=$_POST["password"];
         $cpassword=$_POST["cpassword"];
 
+        // Check user
         $sql="Select * from signup where EmailID='$email'";
         $result=mysqli_query($conn,$sql);
         $num=mysqli_num_rows($result);
@@ -77,7 +81,7 @@ margin-right:auto;
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="Index.php">Home</a>
+            <a class="nav-link active" aria-current="page" href="index.php">Home</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="about.php">About</a>

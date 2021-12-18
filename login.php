@@ -1,13 +1,14 @@
 <?php
-    $server= "localhost:3306";
-    $username="root";
-    $password="Root@root123";
-    $database="server_management";
-    $conn = mysqli_connect($server,$username,$password,$database);
-    if(!$conn){
-        die("Error" .mysqli_connect_error());
+    session_start();
+
+    //If already login redirect to welcome page
+    if (isset($_SESSION['status'])) {
+        header("Location: /phpmicroproject/welcome.php");
     }
 
+?>
+<?php
+    include "db_connect.php";
 ?>
 <?php
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -21,6 +22,8 @@
         }
         else {
             if ($result[1] == $password) {
+                $_SESSION['email'] = $email;
+                $_SESSION['password'] = $password;
                 header("Location: /phpmicroproject/welcome.php");
             }
             else {
@@ -69,7 +72,7 @@ margin-right:auto;
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="Index.php">Home</a>
+            <a class="nav-link active" aria-current="page" href="index.php">Home</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="about.php">About</a>

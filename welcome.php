@@ -1,3 +1,6 @@
+<?php
+    session_start();
+?>
 <!doctype html>
 <html lang="en">
 
@@ -18,8 +21,18 @@
    
 </style>
 <body>
-  
-   
+    <?php
+        if (isset($_SESSION['email'])) {
+            $_SESSION['status'] = 'in';
+            echo "Your email is ".$_SESSION['email']. ".<br>";
+            echo "Your password is ". $_SESSION['password'];
+        }
+        else {
+            //If not login redirect to login page
+            header("Location: /phpmicroproject/login.php");
+        }
+
+    ?>
      <!-- Optional JavaScript; choose one of the two! -->
 
     <!-- Option 1: Bootstrap Bundle with Popper -->
